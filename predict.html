@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Assessment | Heart Guard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root { --teal: #14B8A6; --dark: #1E1B4B; --bg: #F0F4F8; --soft-bg: #f8fafc; }
+        body { background-color: var(--bg); font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; }
+        
+        .chat-wrapper { height: 80vh; background: white; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); display: flex; flex-direction: column; overflow: hidden; }
+        .chat-header { background: var(--dark); color: white; padding: 20px; display: flex; align-items: center; justify-content: space-between; }
+        .chat-body { flex: 1; overflow-y: auto; padding: 30px; background: #fdfdfd; }
+        
+        .msg { margin-bottom: 20px; max-width: 80%; padding: 15px 20px; border-radius: 18px; font-size: 0.95rem; line-height: 1.5; position: relative; }
+        .msg-ai { background: var(--soft-bg); border: 1px solid #E2E8F0; color: var(--dark); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .msg-user { background: var(--teal); color: white; align-self: flex-end; margin-left: auto; border-bottom-right-radius: 4px; }
+        
+        .chat-footer { padding: 20px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; }
+        .input-pill { border-radius: 50px; padding: 12px 25px; border: 1px solid #ddd; flex: 1; }
+        .btn-send { background: var(--teal); color: white; border-radius: 50%; width: 48px; height: 48px; border: none; }
+        
+        .ai-status { font-size: 0.75rem; color: #22C55E; font-weight: bold; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="chat-wrapper">
+                <div class="chat-header">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-teal p-2 me-3">🩺</div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">Heart Guard AI Agent</h6>
+                            <span class="ai-status">● Analyzing Intelligence </span>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-light border-0">Exit</a>
+                </div>
+
+                <div class="chat-body d-flex flex-column" id="chatContainer">
+                    </div>
+
+                <div class="chat-footer">
+                    <input type="text" id="userInput" class="form-control" placeholder="Type your answer here..." onkeypress="handleKey(event)">
+                    <button class="btn btn-send" onclick="processInput()">➤</button>
+                </div>
+            </div>
+            
+            <p class="text-center mt-3 text-muted small">
+                Data is validated against clinical standards (BP: 80-200, Chol: 100-600 mg/dL).
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+const questions = [
+    "First, could you please tell me your <strong>Age</strong>?",
+    "What is your Gender? (Type 1 for Male, 0 for Female)",
+    "Chest Pain Type? (0: Typical, 1: Atypical, 2: Non-anginal, 3: Asymptomatic)",
+    "Resting Blood Pressure (mmHg)?",
+    "Serum Cholesterol level (mg/dL)?",
+    "Fasting Blood Sugar > 120 mg/dl? (1 for True, 0 for False)",
+    "Resting ECG results? (0, 1, or 2)",
+    "Maximum Heart Rate achieved?",
+    "Exercise induced angina? (1 for Yes, 0 for No)",
+    "ST depression induced by exercise (Oldpeak)?",
+    "Slope of peak exercise ST segment? (0, 1, or 2)",
+    "Number of major vessels (0-3) colored by flourosopy?",
+    "Thal? (1 = normal; 2 = fixed defect; 3 = reversable defect)"
+];
+
+let currentStep = 0;
+let collectedData = []; 
+const container = document.getElementById('chatContainer');
+
+window.onload = () => {
+    addMessage("Hello! I am your AI Diagnostic Assistant. I'll help you assess your heart health risk using our <strong>AI Models</strong>.", 'ai');
+    setTimeout(() => {
+        addMessage(questions[0], 'ai');
+        currentStep = 1; 
+    }, 800);
+};
+
+function handleKey(e) { if (e.key === 'Enter') processInput(); }
+
+function processInput() {
+    const input = document.getElementById('userInput');
+    const val = input.value.trim();
+    if (val === "") return;
+
+    addMessage(val, 'user');
+    
+    if (val.toLowerCase() === 'go' && collectedData.length >= 13) {
+        addMessage("Initiating Clinical Analysis... Please wait.", 'ai');
+        sendDataToBackend();
+    } else {
+        let numericVal = parseFloat(val);
+        if (!isNaN(numericVal)) {
+            collectedData.push(numericVal);
+        }
+
+        setTimeout(() => {
+            if (currentStep < questions.length) {
+                addMessage(questions[currentStep], 'ai');
+                currentStep++;
+            } else {
+                addMessage("All data collected. Ready to run the AI Diagnostic? (Type <strong>'go'</strong> to analyze)", 'ai');
+            }
+        }, 600);
+    }
+    input.value = "";
+}
+
+async function sendDataToBackend() {
+    try {
+        const formData = new URLSearchParams();
+        // Map your array to the keys Flask expects
+        const keys = ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal'];
+        
+        keys.forEach((key, index) => {
+            formData.append(key, collectedData[index]);
+        });
+
+        const response = await fetch('/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.status === "success") {
+            window.location.href = data.redirect; // Redirect to /results
+        } else {
+            addMessage("AI Error: " + data.message, 'ai');
+        }
+    } catch (error) {
+        console.error("Full Error Info:", error);
+        addMessage("Connection error. Check your Python terminal for errors.", 'ai');
+    }
+}
+
+function addMessage(text, sender) {
+    const div = document.createElement('div');
+    div.className = `msg msg-${sender} shadow-sm`;
+    div.innerHTML = text;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+</script>
+</body>
+</html>

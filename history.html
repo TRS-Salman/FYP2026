@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History Log | AI Heart Guard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root { --teal: #14B8A6; --dark: #1E1B4B; --bg: #F8FAFC; }
+        body { background-color: var(--bg); font-family: 'Inter', sans-serif; }
+        .sidebar { background: var(--dark); min-height: 100vh; color: white; padding-top: 20px; }
+        .nav-link { color: rgba(255,255,255,0.7); border-radius: 10px; margin: 5px 15px; }
+        .nav-link.active { background: rgba(255,255,255,0.1); color: white; border-left: 4px solid var(--teal); }
+        
+        .history-card { border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .table thead { background-color: #F1F5F9; color: var(--dark); }
+        .status-badge { border-radius: 50px; padding: 5px 12px; font-size: 0.8rem; font-weight: 600; }
+        .bg-low { background: #DCFCE7; color: #166534; }
+        .bg-moderate { background: #FEF9C3; color: #854D0E; }
+        .bg-high { background: #FEE2E2; color: #991B1B; }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+            <div class="px-4 mb-4">
+                <h5 class="fw-bold text-teal">❤️ AI Agent</h5>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">📊 Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('predict') }}">🧬 New Prediction</a></li>
+                <li class="nav-item"><a class="nav-link active" href="{{ url_for('hostory') }}">📜 History Log</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('profile') }}">👤 My Profile</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('settings') }}">⚙️ Settings</a></li>
+                <li class="nav-item mt-5">
+                        <a class="nav-link text-danger fw-bold" href="{{ url_for('logout') }}">
+                            🚪 Secure Logout
+                        </a>
+                    </li>                
+            </ul>
+        </nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold" style="color: var(--dark);">Assessment History</h2>
+                <button class="btn btn-outline-secondary btn-sm" onclick="window.print()">📥 Export PDF</button>
+            </div>
+
+            <div class="card history-card p-3 mb-4">
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" placeholder="Search by Assessment ID or Date...">
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select">
+                            <option selected>All Risk Levels</option>
+                            <option>High Risk</option>
+                            <option>Moderate Risk</option>
+                            <option>Low Risk</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card history-card overflow-hidden">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th class="ps-4">Assessment ID</th>
+                                <th>Date & Time</th>
+                                <th>Risk Probability</th>
+                                <th>Risk Level</th>
+                                <th>AI Agent Note</th>
+                                <th class="text-end pe-4">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="ps-4 fw-bold">#AID-1024 <! just random type to look at the frontend for only this step></td>
+                                <td>Jan 30, 2026 | 14:20 <! just random type to look at the frontend for only this step></td>
+                                <td>12.4% <! just random type to look at the frontend for only this step></td>
+                                <td><span class="status-badge bg-low">Low Risk</span></td>
+                                <td class="small text-muted">Normal clinical profile.</td>
+                                <td class="text-end pe-4">
+                                    <button class="btn btn-sm btn-light" onclick="location.href='results.html'">Details</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4 fw-bold">#AID-1023 <! just random type to look at the frontend for only this step></td>
+                                <td>Jan 25, 2026 | 09:15 <! just random type to look at the frontend for only this step></td>
+                                <td>68.2% <! just random type to look at the frontend for only this step></td>
+                                <td><span class="status-badge bg-high">High Risk</span></td>
+                                <td class="small text-muted">Elevated BP & Cholesterol.</td>
+                                <td class="text-end pe-4">
+                                    <button class="btn btn-sm btn-light" onclick="location.href='results.html'">Details</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4 fw-bold">#AID-1019 <! just random type to look at the frontend for only this step></td>
+                                <td>Jan 12, 2026 | 11:45 <! just random type to look at the frontend for only this step></td>
+                                <td>41.0% <! just random type to look at the frontend for only this step></td>
+                                <td><span class="status-badge bg-moderate">Moderate</span></td>
+                                <td class="small text-muted">Monitor lifestyle factors.</td>
+                                <td class="text-end pe-4">
+                                    <button class="btn btn-sm btn-light" onclick="location.href='results.html'">Details</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <p class="mt-4 text-center text-muted small">
+                Showing the last 10 entries from the <strong>SQLAlchemy</strong> database logs.
+            </p>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | AI Heart Guard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root { --teal: #14B8A6; --dark: #1E1B4B; --bg: #F8FAFC; }
+        body { background-color: var(--bg); font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .auth-card { background: white; border-radius: 20px; box-shadow: 0 15px 35px rgba(30, 27, 75, 0.1); overflow: hidden; max-width: 900px; width: 100%; display: flex; }
+        .auth-info { background: var(--dark); color: white; padding: 60px; width: 45%; display: flex; flex-direction: column; justify-content: center; }
+        .auth-form { padding: 60px; width: 55%; }
+        .btn-teal { background: var(--teal); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: 600; transition: 0.3s; }
+        .btn-teal:hover { background: #0D9488; transform: translateY(-2px); }
+        .form-control { padding: 12px; border-radius: 10px; border: 1px solid #E2E8F0; }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="auth-form w-100" style="max-width: 500px; margin: auto;">
+            <div class="text-center mb-4">
+                <h3 class="fw-bold">Create User Account</h3>
+                <p class="text-muted small">Join the medical AI network.</p>
+            </div>
+            <form action="{{ url_for('register') }}" method="POST">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label small fw-bold">Username</label>
+                        <input type="text" name="username" class="form-control" placeholder="Your name" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small fw-bold">Email</label>
+                        <input type="email" name="email" class="form-control" placeholder="Email Address" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small fw-bold">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-teal w-100 mt-4">Register Account</button>
+            </form>
+            <p class="text-center mt-3 small">Already have an account? <a href="{{ url_for('login') }}" class="text-teal text-decoration-none fw-bold">Login</a></p>
+        </div>
+    </div>
+</body>
+</html>

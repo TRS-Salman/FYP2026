@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Settings | AI Heart Guard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root { --teal: #14B8A6; --dark: #1E1B4B; --bg: #F1F5F9; }
+        body { background-color: var(--bg); font-family: 'Inter', sans-serif; }
+        .settings-card { background: white; border-radius: 20px; border: none; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .form-switch .form-check-input:checked { background-color: var(--teal); border-color: var(--teal); }
+        .settings-label { font-weight: 600; color: var(--dark); margin-bottom: 0; }
+        .settings-desc { font-size: 0.85rem; color: #64748B; }
+    </style>
+</head>
+<body>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center mb-5">
+                    <a href="{{ url_for('home') }}" class="btn btn-light rounded-circle me-3">←</a>
+                    <h2 class="fw-bold mb-0">System Settings</h2>
+                </div>
+
+                <h5 class="text-muted text-uppercase small fw-bold mb-3">AI Intelligence Layer</h5>
+                <div class="settings-card p-4 mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <p class="settings-label">ML Framework</p>
+                            <p class="settings-desc mb-0">Toggle between Multi-Layer Perceptron and Classical Models.</p>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" checked>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center mb-0">
+                        <div>
+                            <p class="settings-label">AI Explanations </p>
+                            <p class="settings-desc mb-0">Generate feature importance visualizations after each prediction.</p>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" checked>
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="text-muted text-uppercase small fw-bold mb-3">Security & Privacy</h5>
+                <div class="settings-card p-4 mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <p class="settings-label">Two-Factor Authentication</p>
+                            <p class="settings-desc mb-0">Add an extra layer of  data protection.</p>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox">
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button class="btn btn-outline-danger btn-sm w-25">Change Password</button>
+                    </div>
+                </div>
+
+                <div class="text-end">
+                    <button class="btn btn-teal px-5 py-2 shadow" onclick="alert('Configuration Updated Successfully!')">Save Configurations</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

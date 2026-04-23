@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | AI Heart Guard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root { --teal: #14B8A6; --dark: #1E1B4B; --soft-bg: #F1F5F9; }
+        body { background-color: var(--soft-bg); font-family: 'Inter', sans-serif; }
+        
+        /* Sidebar Navigation */
+        .sidebar { background: var(--dark); min-height: 100vh; color: white; padding-top: 20px; }
+        .nav-link { color: rgba(255,255,255,0.7); border-radius: 10px; margin: 5px 15px; transition: 0.3s; }
+        .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.1); color: white; }
+        .nav-link.active { border-left: 4px solid var(--teal); }
+
+        /* Dashboard Cards */
+        .stat-card { border: none; border-radius: 20px; transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); }
+        .btn-predict { background: var(--teal); color: white; border-radius: 12px; font-weight: 600; padding: 12px 24px; }
+        
+        /* Pulse Animation for Status */
+        .pulse-online { width: 10px; height: 10px; background: #22C55E; border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 8px #22C55E; }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse shadow">
+            <div class="position-sticky">
+                <div class="px-4 mb-4">
+                    <h5 class="fw-bold text-teal">❤️ AI Agent</h5>
+                    <p>Welcome, {{ session['username'] }}!</p>
+                    <p>Your registered email is: {{ session['email'] }}</p>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('home') }}"> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('predict') }}">🧬 New Prediction</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('history') }}">📜 History Log</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('profile') }}">👤 My Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('settings') }}">⚙️ Settings</a></li>
+                    <li class="nav-item mt-5">
+                        <a class="nav-link text-danger fw-bold" href="{{ url_for('logout') }}">
+                            🚪 Secure Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+                <h2 class="fw-bold" style="color: var(--dark);">Overview</h2>
+                <div class="small fw-medium text-muted">
+                    <span class="pulse-online"></span> System Status: AI Intelligence Active
+                </div>
+            </div>
+
+            <div class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <div class="card stat-card shadow-sm p-4">
+                        <small class="text-uppercase text-muted fw-bold ls-1">Last Probability of Heart Attack</small>
+                        <h2 class="display-6 fw-bold mt-2 text-teal">...</h2>
+                        <p class="mb-0 text-success small">Status: ...</p>
+                    </div>
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4 text-end">
+                    <button onclick="location.href='{{ url_for('predict') }}'" class="btn btn-predict btn-lg w-100 shadow-sm">
+                        + Start New Assessment
+                    </button>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card border-0 shadow-sm p-4 h-100">
+                        <h5 class="fw-bold mb-4">Historical Risk Trends</h5>
+                        <div style="height: 300px; background: #F8FAFC; border: 2px dashed #E2E8F0; border-radius: 15px; display: flex; align-items: center; justify-content: center;" class="text-muted">
+                            [Interactive Chart.js: Risk Over Time Placeholder]<br>
+                            <b><font color="green"> NOTE: Will work when ML will done</font></b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>
